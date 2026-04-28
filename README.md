@@ -1,21 +1,44 @@
-# adaptive-caret
+<!-- markdownlint-disable MD033 MD041 -->
+<p align="center">
+  <br />
+  <strong style="font-size: 1.35em; letter-spacing: -0.03em;">Adaptive Caret</strong><br />
+  <span><sup>by Square²</sup> · <a href="https://square2.pt"><strong>square2.pt</strong></a></span>
+  <br /><br />
+  <a href="https://www.npmjs.com/package/@square2-inc/adaptive-caret" title="Versão npm"><img src="https://img.shields.io/npm/v/@square2-inc/adaptive-caret?style=flat-square&label=npm&color=1e293b&labelColor=0f172a" alt="npm version" /></a>
+  &nbsp;
+  <a href="https://github.com/Square2-Inc/AdaptiveCaret/blob/main/LICENSE" title="Licença"><img src="https://img.shields.io/npm/l/@square2-inc/adaptive-caret?style=flat-square&color=1e293b&labelColor=0f172a" alt="License MIT" /></a>
+  <br /><br />
+  <a href="https://square2.pt">Website</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/Square2-Inc/AdaptiveCaret">GitHub</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.npmjs.com/package/@square2-inc/adaptive-caret">npm</a>
+  <br /><br />
+</p>
 
-Biblioteca JavaScript (TypeScript) que substitui o cursor nativo por um círculo que **muda para um “caret” vertical** sobre texto (altura alinhada à linha) e **amplia sobre botões e links**. Tamanhos, cores, transições e estilo de seleção de texto são configuráveis.
+Biblioteca JavaScript (TypeScript) da **[Square²](https://square2.pt)** que substitui o cursor nativo por um círculo que **muda para um “caret” vertical** sobre texto (altura alinhada à linha) e **amplia sobre botões e links**. Tamanhos, cores, transições e estilo de seleção de texto são configuráveis.
 
 **Browser apenas** — chama `createAdaptiveCaret()` numa página com `document` (não suporta SSR sem guard).
 
-Repositório: [Square2-Inc/AdaptiveCaret](https://github.com/Square2-Inc/AdaptiveCaret)
+---
 
-## Instalação
+## Instalação (npm)
 
 ```bash
-npm install adaptive-caret
+npm install @square2-inc/adaptive-caret
 ```
 
 ## Utilização rápida
 
 ```ts
-import { createAdaptiveCaret } from "adaptive-caret";
+import {
+  createAdaptiveCaret,
+  PACKAGE_BRAND,
+} from "@square2-inc/adaptive-caret";
+
+// Metadados da marca (website, repo, nome do pacote) — opcional p.ex. para créditos
+console.log(PACKAGE_BRAND.displayName); // "Adaptive Caret by Square²"
+console.log(PACKAGE_BRAND.websiteUrl); // https://square2.pt
 
 const caret = createAdaptiveCaret({
   cursorSize: 28,
@@ -24,7 +47,6 @@ const caret = createAdaptiveCaret({
   selectionBackground: "rgba(37, 99, 235, 0.25)",
 });
 
-// Para remover listeners e o elemento injetado:
 // caret.destroy();
 ```
 
@@ -46,6 +68,10 @@ Devolve `{ element, destroy }`:
 |--------|-----------|
 | `element` | Nó DOM do cursor (`HTMLElement`). |
 | `destroy()` | Remove o cursor, estilos de seleção desta instância, listeners e repõe `cursor` nativo onde foi aplicado `cursor: none`. |
+
+### `PACKAGE_BRAND`
+
+Objeto constante com identidade do pacote: `displayName`, `packageName`, `websiteUrl`, `repositoryUrl`, `organization`.
 
 ### Opções
 
@@ -97,13 +123,12 @@ npm run build
 
 Gera `dist/` (ESM, CJS e `.d.ts`).
 
-## Publicar no npm
+## Publicar no npm (mantenedores)
 
-1. Conta npm e login: `npm login`
-2. Verificar conteúdo: `npm pack --dry-run`
-3. Publicar: `npm publish` (executa `prepublishOnly` → build)
+1. Conta npm com permissão no scope `@square2-inc` e login: `npm login`
+2. Na raiz do repo: `npm publish --access public` (executa `prepublishOnly` → build)
 
-Ajusta o campo `"name"` em [`package.json`](package.json) se precisares de um scope (`@org/adaptive-caret`).
+Se o scope `@square2-inc` ainda não existir na npm, cria a organização em [npmjs.com/org/create](https://www.npmjs.com/org/create) ou publica com utilizador autorizado no scope.
 
 ## Acessibilidade
 
@@ -117,15 +142,8 @@ MIT — ver [LICENSE](LICENSE).
 
 ## Ligação ao GitHub
 
-Se o projeto ainda não estiver versionado:
-
 ```bash
-git init
-git add .
-git commit -m "feat: initial adaptive-caret library"
-git branch -M main
 git remote add origin https://github.com/Square2-Inc/AdaptiveCaret.git
+git branch -M main
 git push -u origin main
 ```
-
-Substitui a URL por SSH (`git@github.com:Square2-Inc/AdaptiveCaret.git`) se preferires.

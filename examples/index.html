@@ -1,75 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>adaptive-caret demo</title>
+  <title>Adaptive Caret · Square²</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      background: radial-gradient(circle at 20% 20%, #eef2ff, #e5e7eb);
-      color: #111827;
+      background: radial-gradient(ellipse 120% 80% at 50% 0%, #1e293b 0%, #0f172a 45%, #020617 100%);
+      color: #e2e8f0;
     }
     .card {
       max-width: 560px;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(12px);
-      border-radius: 1.5rem;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 1.25rem;
       padding: 2rem;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
-    h1 { font-size: 1.75rem; letter-spacing: -0.02em; }
-    p { line-height: 1.6; }
+    .brand {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 0.25rem;
+    }
+    .brand strong { color: #f8fafc; font-weight: 600; }
+    h1 { font-size: 1.65rem; letter-spacing: -0.03em; font-weight: 650; color: #f8fafc; }
+    p { line-height: 1.65; color: #cbd5e1; }
     .actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
     button {
       padding: 0.65rem 1.25rem;
       border-radius: 999px;
       border: none;
-      background: #111827;
-      color: #fff;
+      background: #f8fafc;
+      color: #0f172a;
       font-size: 0.95rem;
-      cursor: none;
-    }
-    a.link {
-      color: #1d4ed8;
       font-weight: 600;
       cursor: none;
     }
+    a.link {
+      color: #38bdf8;
+      font-weight: 600;
+      cursor: none;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.45);
+    }
+    footer {
+      margin-top: auto;
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+      max-width: 560px;
+      line-height: 1.6;
+    }
+    footer a {
+      color: #94a3b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+    footer a:hover { color: #e2e8f0; }
   </style>
 </head>
 <body>
   <main class="card">
-    <h1 class="text-hover">Adaptive caret</h1>
+    <p class="brand"><strong>Adaptive Caret</strong> · by Square²</p>
+    <h1 class="text-hover">Demo</h1>
     <p class="text-hover">
-      Hover this paragraph — the cursor becomes a caret sized to the line.
-      Use <strong class="text-hover">nested text</strong> to see height follow typography.
+      Paira sobre este texto — o cursor torna-se um caret com a altura da linha.
+      Usa <strong class="text-hover">texto nested</strong> para ver a adaptação.
     </p>
     <div class="actions">
-      <button type="button">Button target</button>
-      <a class="link" href="#">Link target</a>
+      <button type="button">Botão</button>
+      <a class="link" href="#">Link</a>
     </div>
   </main>
 
+  <footer>
+    <a href="https://square2.pt">square2.pt</a>
+    ·
+    <a href="https://github.com/Square2-Inc/AdaptiveCaret">GitHub</a>
+    ·
+    <code style="font-size: 0.78rem; color: #475569;">npm i @square2-inc/adaptive-caret</code>
+  </footer>
+
   <script type="module">
-    import { createAdaptiveCaret } from "../dist/index.js";
+    import { createAdaptiveCaret, PACKAGE_BRAND } from "../dist/index.js";
+
+    document.title = `${PACKAGE_BRAND.displayName.split(" by ")[0]?.trim() ?? "Adaptive Caret"} · ${PACKAGE_BRAND.organization}`;
 
     createAdaptiveCaret({
       cursorSize: 28,
       interactiveSize: 44,
       transitionDuration: "0.28s",
-      caretColor: "#2563eb",
-      cursorColor: "#0f0f0f",
-      selectionBackground: "rgba(37, 99, 235, 0.25)",
-      selectionColor: "#111827",
+      caretColor: "#38bdf8",
+      cursorColor: "#f8fafc",
+      cursorShadow: "0 4px 24px rgba(15, 23, 42, 0.45)",
+      caretShadow: "0 0 18px rgba(56, 189, 248, 0.55)",
+      interactiveShadow: "0 8px 28px rgba(0, 0, 0, 0.35)",
+      selectionBackground: "rgba(56, 189, 248, 0.28)",
+      selectionColor: "#f8fafc",
     });
   </script>
 </body>

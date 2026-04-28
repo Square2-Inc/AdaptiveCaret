@@ -1,3 +1,21 @@
+/**
+ * Identidade do pacote no ecossistema Square² — útil para créditos na UI ou logs.
+ * @see https://square2.pt
+ * @see https://github.com/Square2-Inc/AdaptiveCaret
+ */
+export const PACKAGE_BRAND = {
+  /** Nome completo para marketing e documentação */
+  displayName: "Adaptive Caret by Square²",
+  /** Nome npm (scope + pacote) */
+  packageName: "@square2-inc/adaptive-caret",
+  /** Site da empresa */
+  websiteUrl: "https://square2.pt",
+  /** Repositório público */
+  repositoryUrl: "https://github.com/Square2-Inc/AdaptiveCaret",
+  /** Organização */
+  organization: "Square²",
+} as const;
+
 /** Shared id for the injected base stylesheet (single `<style>` per document). */
 export const BASE_STYLE_ID = "adaptive-caret-base-styles";
 

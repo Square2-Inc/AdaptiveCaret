@@ -7,4 +7,8 @@ export {
   durationToCss,
   applyCursorVariables,
 } from "./styles";
-export { DEFAULT_ADAPTIVE_CARET, BASE_STYLE_ID } from "./constants";
+export {
+  DEFAULT_ADAPTIVE_CARET,
+  BASE_STYLE_ID,
+  PACKAGE_BRAND,
+} from "./constants";
