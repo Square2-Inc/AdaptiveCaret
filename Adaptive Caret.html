@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>adaptive caret · robust detection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f4f9;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      cursor: none;
+      background: radial-gradient(circle at 10% 30%, #f0f0f7, #dbdbe5);
+      color: #121215;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border-radius: 3.5rem;
+      padding: 4rem 3.5rem;
+      max-width: 720px;
+      width: 100%;
+      box-shadow: 0 40px 70px rgba(0,0,0,0.08), 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255,255,255,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      /* card itself should not trigger text caret unless children are text */
+      cursor: none;
+    }
+
+    .title {
+      font-size: clamp(2.8rem, 7vw, 4.4rem);
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #0a0a0c;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      font-weight: 450;
+      color: #3d3d4a;
+      letter-spacing: -0.01em;
+      border-left: 4px solid #2563eb;
+      padding-left: 1.3rem;
+      margin-top: -0.4rem;
+    }
+
+    .body-text {
+      font-size: 1.25rem;
+      line-height: 1.65;
+      color: #2b2b33;
+      font-weight: 400;
+    }
+
+    .small-note {
+      font-size: 0.95rem;
+      color: #5b5b68;
+      line-height: 1.5;
+      margin-top: 0.2rem;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .primary-btn {
+      background: #141416;
+      color: white;
+      border: none;
+      padding: 0.9rem 2.4rem;
+      border-radius: 3rem;
+      font-size: 1.1rem;
+      font-weight: 520;
+      letter-spacing: 0.01em;
+      cursor: none;
+      transition: background 0.25s, transform 0.2s;
+      background: #0f0f12;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .primary-btn:hover {
+      background: #27272e;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(0,0,0,0.15);
+    }
+
+    .link-style {
+      color: #141416;
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      text-decoration-thickness: 2px;
+      text-decoration-color: #2563eb;
+      cursor: none;
+      font-size: 1.15rem;
+      align-self: flex-start;
+      transition: color 0.2s;
+    }
+
+    .link-style:hover {
+      color: #2563eb;
+    }
+
+    /* Cursor circle – base */
+    .cursor-circle {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: #0f0f0f;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), 
+                  height 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  border-radius 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  background-color 0.25s ease,
+                  transform 0.2s ease-out;
+      will-change: width, height, border-radius, background-color, transform;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+
+    /* Caret mode: narrow vertical pill, blue – height set dynamically via JS */
+    .cursor-circle.caret-mode {
+      width: 4px;
+      border-radius: 20px;
+      background-color: #2563eb;
+      box-shadow: 0 0 14px rgba(37, 99, 235, 0.65);
+      transition: width 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), 
+                  height 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  border-radius 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  background-color 0.25s ease,
+                  transform 0.2s ease-out;
+    }
+
+    /* Button/link hover: scale 1.5x (circle) */
+    .cursor-circle.button-hover {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: #0f0f0f;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+      transition: width 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), 
+                  height 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  border-radius 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  background-color 0.25s ease,
+                  transform 0.2s ease-out;
+    }
+
+    @media (max-width: 500px) {
+      .card {
+        padding: 2.5rem 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-circle" id="cursorCircle"></div>
+
+  <main class="card" id="mainCard">
+    <h1 class="title text-hover">adaptive caret</h1>
+    <p class="subtitle text-hover">height matches text · circle to blue pill</p>
+    
+    <p class="body-text text-hover">
+      This paragraph demonstrates <strong>dynamic caret height</strong>. 
+      The vertical blue pill adjusts its height to the exact text line you're hovering over. 
+      Move across different text sizes — the caret always fits perfectly.
+    </p>
+    
+    <p class="small-note text-hover" style="font-size: 0.9rem; line-height: 1.4;">
+      Smaller text like this note will produce a shorter caret. 
+      The transformation uses the element's computed line height or font size to stay proportional.
+    </p>
+
+    <div class="button-group">
+      <button class="primary-btn" id="actionButton">hover button · scale 1.5x</button>
+      <a href="#" class="link-style" id="demoLink">explore link</a>
+    </div>
+    
+    <p class="small-note" style="margin-top: 0.2rem; color: #4b4b58;">
+      <span class="text-hover">↳ text hover → adaptive caret height · buttons/links → circle scale</span>
+    </p>
+  </main>
+
+  <script>
+    (function() {
+      const cursorCircle = document.getElementById('cursorCircle');
+      if (!cursorCircle) return;
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      
+      // Track mouse position
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorCircle.style.left = mouseX + 'px';
+        cursorCircle.style.top = mouseY + 'px';
+        
+        // Robust detection: determine cursor state based on element under pointer
+        updateCursorStateFromElement(e.clientX, e.clientY);
+      });
+
+      // State tracking
+      let isScaleActive = false;
+      let currentTextElement = null;
+      let lastState = 'default'; // 'default', 'caret', 'scale'
+
+      // ----- Helper functions for cursor states -----
+      function enableCaretMode(element) {
+        if (!cursorCircle) return;
+        if (lastState === 'caret' && currentTextElement === element) {
+          // already in caret mode for same element, just update height if needed
+          updateCaretHeight(element);
+          return;
+        }
+        cursorCircle.classList.remove('button-hover');
+        cursorCircle.classList.add('caret-mode');
+        updateCaretHeight(element);
+        lastState = 'caret';
+        currentTextElement = element;
+      }
+
+      function enableButtonScaleMode() {
+        if (!cursorCircle) return;
+        if (lastState === 'scale') return;
+        cursorCircle.classList.remove('caret-mode');
+        cursorCircle.classList.add('button-hover');
+        cursorCircle.style.height = ''; // clear dynamic height for circle
+        lastState = 'scale';
+        currentTextElement = null;
+      }
+
+      function resetToDefaultCircle() {
+        if (!cursorCircle) return;
+        if (lastState === 'default') return;
+        cursorCircle.classList.remove('caret-mode', 'button-hover');
+        cursorCircle.style.height = '';
+        lastState = 'default';
+        currentTextElement = null;
+        isScaleActive = false;
+      }
+
+      // ----- Dynamic caret height based on text element -----
+      function updateCaretHeight(element) {
+        if (!element || !cursorCircle) return;
+        
+        const computedStyle = window.getComputedStyle(element);
+        let lineHeight = computedStyle.lineHeight;
+        const fontSize = computedStyle.fontSize;
+        
+        if (lineHeight === 'normal') {
+          const fontSizeValue = parseFloat(fontSize);
+          lineHeight = (fontSizeValue * 1.3) + 'px';
+        }
+        
+        let heightPx = parseFloat(lineHeight);
+        if (isNaN(heightPx)) {
+          heightPx = parseFloat(fontSize) * 1.3;
+        }
+        
+        const caretHeight = Math.min(Math.max(heightPx, 22), 64);
+        
+        if (cursorCircle.classList.contains('caret-mode')) {
+          cursorCircle.style.height = caretHeight + 'px';
+        }
+      }
+
+      // ----- Core detection: decide state based on element under cursor -----
+      function updateCursorStateFromElement(clientX, clientY) {
+        // Get element at current mouse position (ignoring the cursor circle itself because pointer-events: none)
+        const elementUnderCursor = document.elementFromPoint(clientX, clientY);
+        if (!elementUnderCursor) {
+          resetToDefaultCircle();
+          return;
+        }
+
+        // Priority 1: check if element or any parent is a scale target (button, link, .primary-btn, .link-style)
+        const scaleTarget = elementUnderCursor.closest('.primary-btn, .link-style, button, a');
+        if (scaleTarget) {
+          isScaleActive = true;
+          enableButtonScaleMode();
+          return;
+        }
+
+        // Priority 2: check if element or any parent is a text-hover target
+        const textTarget = elementUnderCursor.closest('.text-hover');
+        if (textTarget) {
+          isScaleActive = false;
+          enableCaretMode(textTarget);
+          return;
+        }
+
+        // If we reach here, we're not over any interactive or text element → default circle
+        isScaleActive = false;
+        resetToDefaultCircle();
+      }
+
+      // Additional safety: when mouse leaves the window, reset
+      document.addEventListener('mouseleave', () => {
+        resetToDefaultCircle();
+      });
+
+      // Also reset on blur to avoid stuck states
+      window.addEventListener('blur', () => {
+        resetToDefaultCircle();
+      });
+
+      // Initial position and state
+      window.addEventListener('load', () => {
+        cursorCircle.style.left = mouseX + 'px';
+        cursorCircle.style.top = mouseY + 'px';
+        // Force a state check on load
+        updateCursorStateFromElement(mouseX, mouseY);
+      });
+
+      // Touch devices fallback: if no mouse movement, we still show default cursor.
+      // But for touch we might want to hide custom cursor? We keep as is, it won't move.
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "name": "adaptive-caret",
+  "version": "0.1.0",
+  "description": "Custom cursor that morphs into a text caret with configurable sizes, colors, transitions, and selection styling.",
+  "license": "MIT",
+  "keywords": [
+    "cursor",
+    "caret",
+    "custom-cursor",
+    "accessibility",
+    "dom",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Square2-Inc/AdaptiveCaret.git"
+  },
+  "homepage": "https://github.com/Square2-Inc/AdaptiveCaret#readme",
+  "bugs": {
+    "url": "https://github.com/Square2-Inc/AdaptiveCaret/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

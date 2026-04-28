@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>adaptive-caret demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: radial-gradient(circle at 20% 20%, #eef2ff, #e5e7eb);
+      color: #111827;
+    }
+    .card {
+      max-width: 560px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.75rem; letter-spacing: -0.02em; }
+    p { line-height: 1.6; }
+    .actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    button {
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      border: none;
+      background: #111827;
+      color: #fff;
+      font-size: 0.95rem;
+      cursor: none;
+    }
+    a.link {
+      color: #1d4ed8;
+      font-weight: 600;
+      cursor: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1 class="text-hover">Adaptive caret</h1>
+    <p class="text-hover">
+      Hover this paragraph — the cursor becomes a caret sized to the line.
+      Use <strong class="text-hover">nested text</strong> to see height follow typography.
+    </p>
+    <div class="actions">
+      <button type="button">Button target</button>
+      <a class="link" href="#">Link target</a>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createAdaptiveCaret } from "../dist/index.js";
+
+    createAdaptiveCaret({
+      cursorSize: 28,
+      interactiveSize: 44,
+      transitionDuration: "0.28s",
+      caretColor: "#2563eb",
+      cursorColor: "#0f0f0f",
+      selectionBackground: "rgba(37, 99, 235, 0.25)",
+      selectionColor: "#111827",
+    });
+  </script>
+</body>
+</html>
