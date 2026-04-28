@@ -16,9 +16,21 @@
   <br /><br />
 </p>
 
+<p align="center">
+  <img
+    src="./docs/example.png"
+    alt="Adaptive Caret — o cursor personalizado transforma-se num caret sobre o texto e amplia em botões ou links"
+    width="720"
+  />
+  <br />
+  <sub>Guia para adicionares a captura: <a href="./docs/GITHUB-IMAGEM.md">docs/GITHUB-IMAGEM.md</a></sub>
+</p>
+
 Biblioteca JavaScript (TypeScript) da **[Square²](https://square2.pt)** que substitui o cursor nativo por um círculo que **muda para um “caret” vertical** sobre texto (altura alinhada à linha) e **amplia sobre botões e links**. Tamanhos, cores, transições e estilo de seleção de texto são configuráveis.
 
 **Browser apenas** — chama `createAdaptiveCaret()` numa página com `document` (não suporta SSR sem guard).
+
+**Primeira vez com npm (login e publicar o pacote)?** Segue **[docs/GUIA-NPM.md](docs/GUIA-NPM.md)**. Para a **imagem de exemplo no GitHub**, vê **[docs/GITHUB-IMAGEM.md](docs/GITHUB-IMAGEM.md)**.
 
 ---
 
