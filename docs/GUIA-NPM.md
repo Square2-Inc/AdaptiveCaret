@@ -9,6 +9,7 @@ Este projeto publica-se como **`@square2-inc/adaptive-caret`**. Segue os passos 
 - Conta em [npmjs.com](https://www.npmjs.com/signup) (já tens).
 - Permissão para publicar no **scope** `@square2-inc` (organização na npm com esse nome **ou** a tua conta adicionada como membro dessa org).
 - Terminal (PowerShell ou CMD) no Windows.
+- **Autenticação de dois fatores (2FA)** ativa na conta npm — a npm **exige 2FA para publicar** pacotes (mensagem de erro típica abaixo). Sem isto, `npm publish` devolve **403**.
 
 ---
 
@@ -67,11 +68,14 @@ Tem de concluir sem erros e criar a pasta `dist/`.
 
 ## Passo 4 — Publicar
 
+Antes do primeiro `publish`, confirma que a **2FA está ligada** na conta: [npmjs.com](https://www.npmjs.com) → avatar → **Account** → **Two-factor authentication** → **Enable** (recomendado: **Authenticator app**).
+
 ```powershell
 npm publish --access public
 ```
 
 - **`--access public`** é obrigatório para pacotes **scoped** (`@square2-inc/...`) serem visíveis para toda a gente.
+- Durante o publish, o npm pode pedir um **código OTP** (6 dígitos da app de autenticação).
 
 O npm corre automaticamente `prepublishOnly`, que volta a fazer `npm run build`.
 
@@ -99,14 +103,29 @@ npm install @square2-inc/adaptive-caret
 
 Não estás com sessão iniciada. Corre outra vez `npm login` e depois `npm whoami`.
 
-### `403 Forbidden` ou “You do not have permission to publish”
+### `403` — “Two-factor authentication … is required to publish packages”
+
+Isto é **política da npm**: para **publicar** tens de cumprir **uma** destas condições:
+
+1. **Ter 2FA ativo na conta npm** (recomendado para utilizadores humanos).
+   - [npmjs.com](https://www.npmjs.com) → avatar → **Account** (ou **Profile**) → **Two-factor authentication** → **Enable**.
+   - Preferência: **Authenticator app** (Google Authenticator, Bitwarden, 1Password, etc.).
+   - Guarda os **códigos de recuperação** num sítio seguro.
+   - Depois: `npm logout`, `npm login` (cola o **OTP** quando pedir), e volta a `npm publish --access public` (pode pedir **OTP** outra vez).
+
+2. **Token granular** com permissões explícitas para publicação (mais comum em CI ou políticas de empresa). Na npm: **Access Tokens** → **Generate New Token** → **Granular Access Token**, com permissão de escrita/publicação no pacote ou na organização. A própria npm indica quando um token pode **contornar** requisitos de 2FA para automatização — segue a documentação actual ao criares o token.
+   - **Nunca** commits o token para o Git. Usa variável de ambiente ou `~/.npmrc` só na tua máquina.
+
+Se já tens 2FA e continua o 403, verifica também a secção seguinte (permissões na org).
+
+### `403 Forbidden` — “You do not have permission to publish” (outros casos)
 
 - A conta não pertence à organização **`square2-inc`** na npm, ou não tem role que permita publicar.
 - Solução: entrar na org em [npmjs.com/org/square2-inc](https://www.npmjs.com/org/square2-inc) (ajusta o URL se o nome for outro) e pedir **owner**/**admin** para te dar permissão, ou publicar com uma conta que já tenha essa permissão.
 
 ### OTP / 2FA
 
-Se ativaste dois fatores na npm, cada `npm login` e por vezes cada `npm publish` pode pedir código da app de autenticação.
+Com **2FA** ativo, `npm login` e `npm publish` podem pedir o código de **6 dígitos** da app de autenticação em cada operação sensível.
 
 ### Nome do pacote já existe com essa versão
 
