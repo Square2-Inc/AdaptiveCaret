@@ -23,7 +23,7 @@
     width="720"
   />
   <br />
-  <sub>Guia para adicionares a captura: <a href="./docs/GITHUB-IMAGEM.md">docs/GITHUB-IMAGEM.md</a></sub>
+  <sub>Captura de exemplo — cursor e caret sobre texto e links.</sub>
 </p>
 
 Biblioteca JavaScript (TypeScript) da **[Square²](https://square2.pt)** que substitui o cursor nativo por um círculo que **muda para um “caret” vertical** sobre texto (altura alinhada à linha) e **amplia sobre botões e links**. Tamanhos, cores, transições e estilo de seleção de texto são configuráveis.
