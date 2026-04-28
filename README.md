@@ -10,6 +10,8 @@
   <br /><br />
   <a href="https://square2.pt">Website</a>
   &nbsp;·&nbsp;
+  <a href="https://square2-inc.github.io/AdaptiveCaret/"><strong>Demo ao vivo</strong></a>
+  &nbsp;·&nbsp;
   <a href="https://github.com/Square2-Inc/AdaptiveCaret">GitHub</a>
   &nbsp;·&nbsp;
   <a href="https://www.npmjs.com/package/@square2-inc/adaptive-caret">npm</a>
@@ -30,7 +32,7 @@ Biblioteca JavaScript (TypeScript) da **[Square²](https://square2.pt)** que sub
 
 **Browser apenas** — chama `createAdaptiveCaret()` numa página com `document` (não suporta SSR sem guard).
 
-**Primeira vez com npm (login e publicar o pacote)?** Segue **[docs/GUIA-NPM.md](docs/GUIA-NPM.md)**. Para a **imagem de exemplo no GitHub**, vê **[docs/GITHUB-IMAGEM.md](docs/GITHUB-IMAGEM.md)**.
+**Primeira vez com npm (login e publicar o pacote)?** Segue **[docs/GUIA-NPM.md](docs/GUIA-NPM.md)**. Para a **imagem de exemplo no GitHub**, vê **[docs/GITHUB-IMAGEM.md](docs/GITHUB-IMAGEM.md)**. **Demo no browser (GitHub Pages):** [docs/GITHUB-PAGES.md](docs/GITHUB-PAGES.md).
 
 ---
 
@@ -115,6 +117,14 @@ Constantes por defeito estão também em `DEFAULT_ADAPTIVE_CARET` (export nomead
 ### Exportes avançados
 
 - `resolveOptions`, `applyCursorVariables`, `sizeToCss`, `durationToCss` — úteis para temas ou testes.
+
+## Demo ao vivo (GitHub Pages)
+
+Depois de activares Pages na pasta **`/docs`** ([instruções](docs/GITHUB-PAGES.md)), o exemplo corre aqui:
+
+**https://square2-inc.github.io/AdaptiveCaret/**
+
+A página [`docs/index.html`](docs/index.html) usa o pacote via CDN (jsDelivr); requer o pacote **publicado no npm**.
 
 ## Demo local
 

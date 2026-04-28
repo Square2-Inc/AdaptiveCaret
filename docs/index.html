@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adaptive Caret · Square²</title>
-  <!-- Demo ao vivo (CDN): https://square2-inc.github.io/AdaptiveCaret/ -->
+  <meta name="description" content="Demo ao vivo — Adaptive Caret by Square². Cursor que se transforma em caret sobre texto.">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -39,6 +39,20 @@
       margin-bottom: 0.25rem;
     }
     .brand strong { color: #f8fafc; font-weight: 600; }
+    .live-pill {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #22c55e;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
     h1 { font-size: 1.65rem; letter-spacing: -0.03em; font-weight: 650; color: #f8fafc; }
     p { line-height: 1.65; color: #cbd5e1; }
     .actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
@@ -78,7 +92,7 @@
 </head>
 <body>
   <main class="card">
-    <p class="brand"><strong>Adaptive Caret</strong> · by Square²</p>
+    <p class="brand"><strong>Adaptive Caret</strong> · by Square² <span class="live-pill" aria-hidden="true">Live</span></p>
     <h1 class="text-hover">Demo</h1>
     <p class="text-hover">
       Paira sobre este texto — o cursor torna-se um caret com a altura da linha.
@@ -95,11 +109,15 @@
     ·
     <a href="https://github.com/Square2-Inc/AdaptiveCaret">GitHub</a>
     ·
+    <a href="https://www.npmjs.com/package/@square2-inc/adaptive-caret">npm</a>
+    ·
     <code style="font-size: 0.78rem; color: #475569;">npm i @square2-inc/adaptive-caret</code>
   </footer>
 
+  <!-- Pacote servido pelo jsDelivr a partir do npm (precisa do pacote publicado) -->
   <script type="module">
-    import { createAdaptiveCaret, PACKAGE_BRAND } from "../dist/index.js";
+    const PKG = "https://cdn.jsdelivr.net/npm/@square2-inc/adaptive-caret@0.1.0/dist/index.js";
+    const { createAdaptiveCaret, PACKAGE_BRAND } = await import(PKG);
 
     document.title = `${PACKAGE_BRAND.displayName.split(" by ")[0]?.trim() ?? "Adaptive Caret"} · ${PACKAGE_BRAND.organization}`;
 
