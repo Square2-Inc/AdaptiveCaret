@@ -5,6 +5,3 @@ dist/
 .DS_Store
 .env
 .env.*
-
-# Cópia de trabalho local (a versão publicada é docs/example.png)
-images/

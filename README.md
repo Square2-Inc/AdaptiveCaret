@@ -32,7 +32,7 @@ Biblioteca JavaScript (TypeScript) da **[Square²](https://square2.pt)** que sub
 
 **Browser apenas** — chama `createAdaptiveCaret()` numa página com `document` (não suporta SSR sem guard).
 
-**Primeira vez com npm (login e publicar o pacote)?** Segue **[docs/GUIA-NPM.md](docs/GUIA-NPM.md)**. Para a **imagem de exemplo no GitHub**, vê **[docs/GITHUB-IMAGEM.md](docs/GITHUB-IMAGEM.md)**. **Demo no browser (GitHub Pages):** [docs/GITHUB-PAGES.md](docs/GITHUB-PAGES.md).
+> **Nota:** Este projecto foi maioritariamente *vibe coded* pelo **Designer** da equipa Square², não pelos desenvolvedores full stack. Serve como ponto de partida — adapta e valida no teu contexto antes de usar em produção.
 
 ---
 
@@ -71,6 +71,10 @@ Marcar texto que deve usar o modo caret com o seletor por defeito (`[data-adapti
 ```
 
 Botões e âncoras (`button`, `a`, `[role="button"]` por defeito) ativam o modo “interativo” (círculo maior).
+
+## Demo ao vivo
+
+**https://square2-inc.github.io/AdaptiveCaret/**
 
 ## API
 
@@ -118,40 +122,6 @@ Constantes por defeito estão também em `DEFAULT_ADAPTIVE_CARET` (export nomead
 
 - `resolveOptions`, `applyCursorVariables`, `sizeToCss`, `durationToCss` — úteis para temas ou testes.
 
-## Demo ao vivo (GitHub Pages)
-
-Depois de activares Pages na pasta **`/docs`** ([instruções](docs/GITHUB-PAGES.md)), o exemplo corre aqui:
-
-**https://square2-inc.github.io/AdaptiveCaret/**
-
-A página [`docs/index.html`](docs/index.html) usa o pacote via CDN (jsDelivr); requer o pacote **publicado no npm**.
-
-## Demo local
-
-Com dependências instaladas e `npm run build` executado:
-
-```bash
-npx serve .
-```
-
-Abre `http://localhost:3000/examples/` (porta pode variar) e carrega [`examples/index.html`](examples/index.html), que importa [`dist/index.js`](dist/index.js).
-
-## Build do pacote
-
-```bash
-npm install
-npm run build
-```
-
-Gera `dist/` (ESM, CJS e `.d.ts`).
-
-## Publicar no npm (mantenedores)
-
-1. Conta npm com permissão no scope `@square2-inc` e login: `npm login`
-2. Na raiz do repo: `npm publish --access public` (executa `prepublishOnly` → build)
-
-Se o scope `@square2-inc` ainda não existir na npm, cria a organização em [npmjs.com/org/create](https://www.npmjs.com/org/create) ou publica com utilizador autorizado no scope.
-
 ## Acessibilidade
 
 Esconder o cursor nativo pode prejudicar utilizadores que dependem do ponteiro visível ou de tecnologias assistivas. Avalia `hideNativeCursor: false` durante testes ou oferece alternativa (por exemplo, respeitar `prefers-reduced-motion` numa versão futura).
@@ -161,11 +131,3 @@ Os estilos `::selection` são **globais ao documento**; podem interagir com CSS 
 ## Licença
 
 MIT — ver [LICENSE](LICENSE).
-
-## Ligação ao GitHub
-
-```bash
-git remote add origin https://github.com/Square2-Inc/AdaptiveCaret.git
-git branch -M main
-git push -u origin main
-```

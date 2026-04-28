@@ -1,5 +1,7 @@
 /**
  * Identidade do pacote no ecossistema Square² — útil para créditos na UI ou logs.
+ * Disclaimer: o projecto foi maioritariamente *vibe coded* pelo Designer da equipa Square²;
+ * ver README.
  * @see https://square2.pt
  * @see https://github.com/Square2-Inc/AdaptiveCaret
  */

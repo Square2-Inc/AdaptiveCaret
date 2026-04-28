@@ -74,6 +74,16 @@
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
     footer a:hover { color: #e2e8f0; }
+    .disclaimer {
+      margin-top: 1.25rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 0.7rem;
+      line-height: 1.45;
+      color: #64748b;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -97,6 +107,10 @@
     ·
     <code style="font-size: 0.78rem; color: #475569;">npm i @square2-inc/adaptive-caret</code>
   </footer>
+
+  <p class="disclaimer" lang="pt">
+    Este demo foi maioritariamente <em>vibe coded</em> pelo Designer da equipa Square², não pelos devs full stack — usa como inspiração e adapta ao teu caso.
+  </p>
 
   <script type="module">
     import { createAdaptiveCaret, PACKAGE_BRAND } from "../dist/index.js";
